@@ -25,7 +25,7 @@ public class Teste {
 		String texto = "";
 		
 		//int t = Integer.parseInt(nf.format(2));
-		texto += ( "    xi      |    fi     |     Fi    |     fr    |     Fr    |    xi*fi  |   (xi-x)²*fi " + "\n");
+		texto += ( "    xi      |    fi     |     Fi    |     fr    |     Fr    |    xi*fi  |   (xi-x)Â²*fi " + "\n");
 		for(int i = 0;i<dadosT.getVar_xi().length;i++) {
 			texto += ( discreto.format(dadosT.getVar_xi()[i])+" | "+discreto.format(dadosT.getVar_fi()[i])+" | "+discreto.format(dadosT.getVar_Fi()[i])+" | "+por.format(dadosT.getVar_fr()[i])+" | "+nf.format(dadosT.getVar_Fr()[i])
 					+"% | "+ discreto.format(dadosT.getVar_xi_fi()[i])+" | "+nf.format(dadosT.getVar_xi_media_fi()[i]) + "\n");
@@ -33,8 +33,8 @@ public class Teste {
 		
 		
 		
-		texto +=("\nSx² = " + nf.format(dadosT.getVariancia() ) + "\n");
-		texto += ("Sx = " + nf.format(dadosT.getDesvioPadrao()) + "\n");
+		texto +=("\nSxÂ² = " + nf.format(dadosT.getVariancia() ) + "\n");
+		texto += ("1Sx = " + nf.format(dadosT.getDesvioPadrao()) + "\n");
 		texto += ("Media = " + dadosT.getMedia() + "\n");
 		JOptionPane.showMessageDialog(null,texto);
 	}
