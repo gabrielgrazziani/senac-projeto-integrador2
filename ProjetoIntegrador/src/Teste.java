@@ -34,7 +34,7 @@ public class Teste {
 		
 		
 		texto +=("\nSx² = " + nf.format(dadosT.getVariancia() ) + "\n");
-		texto += ("1Sx = " + nf.format(dadosT.getDesvioPadrao()) + "\n");
+		texto += ("Sx = " + nf.format(dadosT.getDesvioPadrao()) + "\n");
 		texto += ("Media = " + dadosT.getMedia() + "\n");
 		JOptionPane.showMessageDialog(null,texto);
 	}
