@@ -1,6 +1,10 @@
 package tratamentoDeDados;
 
 public class DadosQuantitativos extends BaseTratamentoDeDados {
+	public float getMediana() {
+		return mediana;
+	}
+
 	private int var_xi[];
 	private int[] var_xi_fi;
 	private float media;
@@ -8,6 +12,7 @@ public class DadosQuantitativos extends BaseTratamentoDeDados {
 	private float desvioPadrao;
 	private float[] var_xi_media_fi;
 	private int moda[];
+	private float mediana;
 	
 	public int[] getModa() {
 		return moda;
@@ -23,6 +28,7 @@ public class DadosQuantitativos extends BaseTratamentoDeDados {
 		this.variancia = somaVetor(this.var_xi_media_fi)/(teste.length -1);
 		this.desvioPadrao = (float) Math.pow(this.variancia,0.5);
 		this.moda = super.descobrirModa(var_xi, getVar_fi());
+		this.mediana = calculoMediana(teste);
 	}
 	
 	
@@ -79,6 +85,17 @@ public class DadosQuantitativos extends BaseTratamentoDeDados {
 			}
 		}
 		return numeros;		
+	}
+	
+	private static float calculoMediana(int[] numeros) {
+		if(numeros.length % 2 == 0) {
+			int metade = numeros.length/2;
+			return (numeros[metade - 1] + numeros[metade])/2;
+		}
+		else {
+			int metade = (numeros.length + 1)/2;
+			return numeros[metade - 1];
+		}
 	}
 	
 	private static int[] quantidadeNumeros(int[] numero) {

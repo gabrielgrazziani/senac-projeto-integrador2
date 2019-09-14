@@ -2,9 +2,7 @@ package teste;
 
 import java.text.NumberFormat;
 import java.util.Locale;
-
 import javax.swing.JOptionPane;
-
 import tratamentoDeDados.DadosQualitativos;
 import tratamentoDeDados.DadosQuantitativos;
 
