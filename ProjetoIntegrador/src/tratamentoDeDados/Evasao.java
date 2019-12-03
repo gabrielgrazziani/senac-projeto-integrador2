@@ -8,6 +8,11 @@ public class Evasao {
 	private String motivo;
 	private String curso;
 	private String area;
+	
+	public Evasao() {
+		
+	}
+	
 	public int getId() {
 		return id;
 	}

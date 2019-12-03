@@ -9,11 +9,13 @@ public class DadosQualitativos extends BaseTratamentoDeDados{
 	}
 	
 	public DadosQualitativos(String[] teste) {
-		teste = agruparNomes(teste);
-		
-		this.var_xi = repetidoNomes(teste);
-		setFequencia(quantidadeNomes(teste));
-		this.moda = super.descobrirModa(var_xi, getVar_fi());
+		if(teste.length > 0) {
+			teste = agruparNomes(teste);
+			
+			this.var_xi = repetidoNomes(teste);
+			setFequencia(quantidadeNomes(teste));
+			this.moda = super.descobrirModa(var_xi, getVar_fi());
+		}	
 	}
 	
 	public String[] getModa() {
