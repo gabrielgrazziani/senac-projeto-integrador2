@@ -23,7 +23,7 @@ public class NovoTeste {
 		}
 		
 		DadosFiltrados dados = new DadosFiltrados(lista);
-		dados.filtroCurso("geografia");
+		dados.setFiltro(null);
 		
 		String materias = "";
 		for (Evasao evasao : dados.getEvasao()) {

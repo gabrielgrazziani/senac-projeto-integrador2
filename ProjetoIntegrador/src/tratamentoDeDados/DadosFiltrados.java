@@ -1,12 +1,16 @@
 package tratamentoDeDados;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class DadosFiltrados {
 	private ArrayList<Evasao> evasaoOriginal;
 	private ArrayList<Evasao> evasao;
 	private ArrayList<String> motivoEvasao = new ArrayList<String>();
 	private ArrayList<Integer> frequenciaEvasao = new ArrayList<Integer>();
+	private Calendar dataInicio;
+	private Calendar dataFim;
+	private String curso;
 	
 	public DadosFiltrados(ArrayList<Evasao> evasao) {
 		this.evasaoOriginal = evasao;
@@ -15,14 +19,50 @@ public class DadosFiltrados {
 		calcularDados(evasao);
 	}
 	
-	public void filtroCurso(String curso) { //falta null
-		this.evasao.clear();
-		for (Evasao evasao2 : this.evasaoOriginal) {
-			if(evasao2.getCurso().equals(curso)) {
-				evasao.add(evasao2);
+	public void setFiltro(String curso) {
+		this.curso = curso;
+		filtro(dataInicio,dataFim,curso);
+	}
+	
+	public void setFiltro(Calendar dataInicio, Calendar dataFim) {
+		this.dataInicio = dataInicio;
+		this.dataFim = dataFim;
+		filtro(dataInicio,dataFim,curso);
+	}
+	
+	public void setFiltro(Calendar dataInicio, Calendar dataFim, String curso) {
+		this.curso = curso;
+		this.dataInicio = dataInicio;
+		this.dataFim = dataFim;
+		filtro(dataInicio,dataFim,curso);
+	}
+	
+	private void filtro(Calendar dataInicio, Calendar dataFim, String curso) {
+		this.evasao = (ArrayList<Evasao>) this.evasaoOriginal.clone();
+		filtroCurso(curso);
+		filtroData(dataInicio, dataFim);
+		calcularDados(this.evasao);
+	}
+	
+	private void filtroData(Calendar dataInicio, Calendar dataFim) {
+		if(dataInicio != null && dataFim != null) {
+			for (Evasao evasao2 : evasao) {
+				Calendar cal = evasao2.getData();
+				if(!(cal.compareTo(dataInicio) >= 0 && cal.compareTo(dataFim) <= 0)) {
+					this.evasao.remove(evasao2);
+				}
 			}
 		}
-		calcularDados(evasao);
+	}
+	
+	private void filtroCurso(String curso) {
+		if(curso != null) {
+			for (Evasao evasao2 : this.evasaoOriginal) {
+				if(!evasao2.getCurso().equals(curso)) {
+					evasao.remove(evasao2);
+				}
+			}
+		}
 	}
 	
 	private void calcularDados(ArrayList<Evasao> evasao) {
