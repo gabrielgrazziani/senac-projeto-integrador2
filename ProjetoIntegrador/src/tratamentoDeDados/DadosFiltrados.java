@@ -21,7 +21,6 @@ public class DadosFiltrados {
 	
 	public DadosFiltrados(ArrayList<Evasao> evasao) {
 		this.evasaoOriginal = evasao;
-		this.evasao = new ArrayList<Evasao>();
 		this.evasao = (ArrayList<Evasao>) this.evasaoOriginal.clone();
 		calcularDados(evasao);
 	}
