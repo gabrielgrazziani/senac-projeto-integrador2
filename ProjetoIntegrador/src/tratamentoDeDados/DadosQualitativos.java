@@ -14,10 +14,32 @@ public class DadosQualitativos extends BaseTratamentoDeDados{
 			
 			this.var_xi = repetidoNomes(teste);
 			setFequencia(quantidadeNomes(teste));
+			ordenarDeMaiorParaMenor();
 			this.moda = super.descobrirModa(var_xi, getVar_fi());
 		}	
 	}
 	
+	private void ordenarDeMaiorParaMenor() {
+		String[] nomes = this.var_xi;
+		int[] numeros = this.getVar_fi();
+		int temp;
+		String tempNome;
+		for (int i = 0; i < numeros.length; i++) {
+			for (int j = i; j < numeros.length; j++) {
+				if(numeros[i] < numeros[j]) {
+					temp = numeros[i];
+					tempNome = nomes[i];
+					numeros[i] = numeros[j];
+					nomes[i] = nomes[j];
+					numeros[j] = temp;
+					nomes[j] = tempNome;
+				}
+			}
+		}
+		this.var_xi = nomes;
+		setFequencia(numeros);
+	}
+
 	public String[] getModa() {
 		return moda;
 	}
