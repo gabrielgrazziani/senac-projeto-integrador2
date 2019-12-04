@@ -2,15 +2,22 @@ package tratamentoDeDados;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+
+import javax.swing.text.html.HTMLDocument.Iterator;
 
 public class DadosFiltrados {
 	private ArrayList<Evasao> evasaoOriginal;
 	private ArrayList<Evasao> evasao;
 	private ArrayList<String> motivoEvasao = new ArrayList<String>();
 	private ArrayList<Integer> frequenciaEvasao = new ArrayList<Integer>();
+	private ArrayList<Integer> frequenciaAcumuladaEvasao = new ArrayList<Integer>();
+	private ArrayList<Integer> frequenciaPorcentagemEvasao = new ArrayList<Integer>();
+	private ArrayList<Integer> frequenciaPorcentagemAcumuladaEvasao = new ArrayList<Integer>();
+	private ArrayList<String> moda = new ArrayList<String>();
 	private Calendar dataInicio;
 	private Calendar dataFim;
-	private String curso;
+	private ArrayList<String> curso;
 	
 	public DadosFiltrados(ArrayList<Evasao> evasao) {
 		this.evasaoOriginal = evasao;
@@ -19,7 +26,7 @@ public class DadosFiltrados {
 		calcularDados(evasao);
 	}
 	
-	public void setFiltro(String curso) {
+	public void setFiltro(ArrayList<String> curso) {
 		this.curso = curso;
 		filtro(dataInicio,dataFim,curso);
 	}
@@ -30,16 +37,16 @@ public class DadosFiltrados {
 		filtro(dataInicio,dataFim,curso);
 	}
 	
-	public void setFiltro(Calendar dataInicio, Calendar dataFim, String curso) {
-		this.curso = curso;
+	public void setFiltro(Calendar dataInicio, Calendar dataFim, ArrayList<String> cursos) {
+		this.curso = cursos;
 		this.dataInicio = dataInicio;
 		this.dataFim = dataFim;
-		filtro(dataInicio,dataFim,curso);
+		filtro(dataInicio,dataFim,cursos);
 	}
 	
-	private void filtro(Calendar dataInicio, Calendar dataFim, String curso) {
+	private void filtro(Calendar dataInicio, Calendar dataFim, ArrayList<String> cursos) {
 		this.evasao = (ArrayList<Evasao>) this.evasaoOriginal.clone();
-		filtroCurso(curso);
+		filtroCurso(cursos);
 		filtroData(dataInicio, dataFim);
 		calcularDados(this.evasao);
 	}
@@ -55,12 +62,13 @@ public class DadosFiltrados {
 		}
 	}
 	
-	private void filtroCurso(String curso) {
-		if(curso != null) {
-			for (Evasao evasao2 : this.evasaoOriginal) {
-				if(!evasao2.getCurso().equals(curso)) {
-					evasao.remove(evasao2);
-				}
+	private void filtroCurso(ArrayList<String> cursos) {
+		if(cursos != null) {
+			for (MenuIterator i = new MenuIterator(this.evasao); i.hasNext();) {
+			  Evasao eva = (Evasao) i.next();
+			  if (!cursos.contains(eva.getCurso())) {
+			    this.evasao.remove(eva);
+			  }
 			}
 		}
 	}

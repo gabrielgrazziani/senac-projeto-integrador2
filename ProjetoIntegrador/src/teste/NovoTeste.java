@@ -23,11 +23,14 @@ public class NovoTeste {
 		}
 		
 		DadosFiltrados dados = new DadosFiltrados(lista);
-		dados.setFiltro(null);
+		ArrayList<String> cursos = new ArrayList<String>();
+		cursos.add("geografia");
+		cursos.add("matematica");
+		dados.setFiltro(cursos);
 		
 		String materias = "";
 		for (Evasao evasao : dados.getEvasao()) {
-			materias += evasao.getCurso() + "\n";
+			materias += evasao.getMotivo() + "\n";
 		}
 		JOptionPane.showMessageDialog(null, materias);
 	}
