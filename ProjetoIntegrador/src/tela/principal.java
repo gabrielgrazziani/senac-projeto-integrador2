@@ -6,18 +6,20 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import com.toedter.calendar.JDateChooser;
-
-import java.awt.GridBagLayout;
 import javax.swing.JButton;
 import java.awt.GridBagConstraints;
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
-import java.awt.Insets;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import java.awt.GridLayout;
+import java.awt.GridBagLayout;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.RowSpec;
+import javax.swing.JScrollPane;
+import javax.swing.JTextPane;
 
 public class principal extends JFrame {
 
@@ -89,6 +91,16 @@ public class principal extends JFrame {
 		
 		caledarioFim.setDateFormatString("dd/MM/yy");
 		panelMenu.add(caledarioFim);
+		
+		JPanel panelDados = new JPanel();
+		contentPane.add(panelDados, BorderLayout.CENTER);
+		panelDados.setLayout(new GridLayout(2, 1, 0, 0));
+		
+		JScrollPane scrollPane = new JScrollPane();
+		panelDados.add(scrollPane);
+		
+		JTextPane textPane = new JTextPane();
+		scrollPane.setViewportView(textPane);
 	}
 
 }
