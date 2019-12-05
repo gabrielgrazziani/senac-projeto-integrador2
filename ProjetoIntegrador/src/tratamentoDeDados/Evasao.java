@@ -1,9 +1,9 @@
 package tratamentoDeDados;
 
 import java.util.Calendar;
+import java.util.Date;
 
 public class Evasao {
-	private int id;
 	private Calendar data;
 	private String motivo;
 	private String curso;
@@ -13,17 +13,17 @@ public class Evasao {
 		
 	}
 	
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
 	public Calendar getData() {
 		return data;
 	}
 	public void setData(Calendar data) {
 		this.data = data;
+	}
+	
+	public void setData(Date data) {
+		Calendar data2 = Calendar.getInstance();
+		data2.setTime(data);
+		this.data = data2;
 	}
 	public String getMotivo() {
 		return motivo;
