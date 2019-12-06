@@ -21,7 +21,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Calendar;
-
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
@@ -38,6 +37,7 @@ public class principal extends JFrame {
 	private XChartPanel<CategoryChart> painelGrafico;
 	private JTextArea textLegenda = new JTextArea();
 	private DadosFiltrados dados;
+	private ArrayList<String> motivosEvasao = new ArrayList<String>();
 
 	/**
 	 * Launch the application.
@@ -105,11 +105,21 @@ public class principal extends JFrame {
 		cursos.add((String) comboBoxCurso.getSelectedItem());
 		return cursos;
 	}
+	
+	private void arumarComboBoxCurso() throws Exception{
+		motivosEvasao = EvasaoDao.listagemCursos();
+		ArrayList<String> list = motivosEvasao;
+		list.add(0, "todos");
+		String[] cur = (String[]) list.toArray(new String[list.size()]);
+		
+		comboBoxCurso.setModel(new DefaultComboBoxModel(cur));
+	}
 
 	/**
 	 * Create the frame.
 	 */
 	public principal() {
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		JMenuBar menuBar = new JMenuBar();
@@ -122,6 +132,7 @@ public class principal extends JFrame {
 					dados = new DadosFiltrados(EvasaoDao.listagem());
 					atualisarGrafico(dados);
 					arumarTextRelatorio(dados);
+					arumarComboBoxCurso();
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
@@ -163,11 +174,15 @@ public class principal extends JFrame {
 		panelMenu.add(panelOp);
 		panelOp.setLayout(new GridLayout(12, 1, 0, 0));
 		
-		JLabel lblCurso = new JLabel("Curso                          ");
+		JLabel lblCurso = new JLabel("Curso                                                                                            ");
 		panelOp.add(lblCurso);
+		
+		JScrollPane scrollPane_2 = new JScrollPane();
+		scrollPane_2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		panelOp.add(scrollPane_2);
+		scrollPane_2.setViewportView(comboBoxCurso);
 		comboBoxCurso.setModel(new DefaultComboBoxModel(new String[] {"todos", "teste"}));
 		comboBoxCurso.setToolTipText("");
-		panelOp.add(comboBoxCurso);
 		
 		JLabel lblDataComeo = new JLabel("Data come\u00E7o");
 		panelOp.add(lblDataComeo);

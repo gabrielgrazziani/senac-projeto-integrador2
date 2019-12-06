@@ -31,4 +31,25 @@ public class EvasaoDao {
 			return null;
 		}
 	}
+	
+	public static ArrayList<String> listagemCursos() {
+		
+		try {
+			String sql = "select distinct e.turma from evasao e order by e.area_turma,e.turma";
+
+			Connection conn = Conexao.getConnection();
+			PreparedStatement pstm = conn.prepareStatement(sql);
+			ResultSet rs = pstm.executeQuery();
+			
+			ArrayList<String> listaEvasao = new ArrayList<String>();
+			while (rs.next()) {
+				String e = rs.getString("turma");
+				listaEvasao.add(e);
+			}
+			return listaEvasao;
+		} catch (Exception e) {
+			System.out.print("Erro ao listar! " + e.getMessage());
+			return null;
+		}
+	}
 }
