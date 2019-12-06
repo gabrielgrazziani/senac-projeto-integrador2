@@ -8,10 +8,8 @@ import javax.swing.border.EmptyBorder;
 import org.knowm.xchart.CategoryChart;
 import org.knowm.xchart.XChartPanel;
 import com.toedter.calendar.JDateChooser;
-
-import modelo.Evasao;
+import dao.EvasaoDao;
 import tratamentoDeDados.DadosFiltrados;
-
 import javax.swing.JButton;
 import java.awt.GridBagConstraints;
 import javax.swing.JLabel;
@@ -19,16 +17,16 @@ import javax.swing.JComboBox;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import java.awt.GridLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-import java.awt.GridBagLayout;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
+import java.util.Calendar;
+
 import javax.swing.JScrollPane;
-import javax.swing.JTextPane;
 import javax.swing.JTextArea;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JRadioButtonMenuItem;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.DefaultComboBoxModel;
 
 public class principal extends JFrame {
 	
@@ -60,34 +58,14 @@ public class principal extends JFrame {
 	private void montarGrafico() {
 		ArrayList<String> nomes = new ArrayList<String>();
 		ArrayList<Integer> numeros = new ArrayList<Integer>();
-		
-//		nomes.add("Outros Motivos");             
-//		nomes.add("Dificuldades Financeiras");      
-//		nomes.add("Não se identificou com o curso");
-//		nomes.add("Não se adaptou a metodologia");  
-//		nomes.add("Motivo de Trabalho");            
-//		nomes.add("Motivo de Estudo");            
-//		nomes.add("Motivo de Saúde");          
-//		nomes.add("Motivo de Viagens");            
-//		nomes.add("Mudança de Município");          
-//		nomes.add("Cancelamento da Programação");  
-//		nomes.add("Adiamento da Programação");  
-//		nomes.add("Incompatibilidade de horário");
-//		nomes.add("Distância / meio de transporte");
-//		nomes.add("Cancelamento de matr¿cula");
-//		nomes.add("Transferência de Programação");
-//		nomes.add("Abandono sem Justificativa");
-//		nomes.add("Alteração de Horário");  
 		nomes.add("Sem dados"); 
-		
-		
 		ArrayList<String> legenda = legendaArrayList(nomes);
 		 
 		for (int i = 0; i < nomes.size(); i++) {
 			numeros.add(i);
 		}
 		
-		arumarLegenda(nomes, legenda);
+		arumarLegenda(nomes, legenda, numeros);
 		grafico = new CategoryChart(30, 30);
 		grafico.addSeries("Motivos Evasão", legenda, numeros);
 	}
@@ -96,9 +74,9 @@ public class principal extends JFrame {
 		ArrayList<String> nomes = dados.getMotivoEvasao();
 		ArrayList<Integer> numeros = dados.getFrequenciaEvasao();
 		ArrayList<String> legenda = legendaArrayList(nomes);
-		arumarLegenda(nomes, legenda);
+		arumarLegenda(nomes, legenda, numeros);
 		
-		grafico.updateCategorySeries("Motivos Evasão", nomes, numeros, null);
+		grafico.updateCategorySeries("Motivos Evasão", legenda, numeros, null);
 		painelGrafico.repaint();
 	}
 	
@@ -110,16 +88,22 @@ public class principal extends JFrame {
 		return legenda;
 	}
 	
-	private void arumarLegenda(ArrayList<String> nomes,ArrayList<String> legenda) {
+	private void arumarLegenda(ArrayList<String> nomes,ArrayList<String> legenda, ArrayList<Integer> numeros) {
 		String le = "";
 		for (int i = 0; i < nomes.size(); i++) {
-			le += legenda.get(i) + " - " + nomes.get(i) + "\n";
+			le += legenda.get(i) + " - " + nomes.get(i) + " - com ( " + numeros.get(i) + " )" + "\n";
 		}
 		textLegenda.setText(le);
 	}
 	
 	private void arumarTextRelatorio(DadosFiltrados dados) {
 		//textArea.setText("teste teste\nteste");
+	}
+	
+	private ArrayList<String> getListCursosEspolhidos(){
+		ArrayList<String> cursos = new ArrayList<String>();
+		cursos.add((String) comboBoxCurso.getSelectedItem());
+		return cursos;
 	}
 
 	/**
@@ -131,7 +115,33 @@ public class principal extends JFrame {
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowOpened(WindowEvent e) {
+				try {	
+					dados = new DadosFiltrados(EvasaoDao.listagem());
+					atualisarGrafico(dados);
+					arumarTextRelatorio(dados);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		
 		JButton btnAtualizar = new JButton("Atualizar");
+		btnAtualizar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Calendar dataInicio = caledarioComeco.getCalendar();
+				Calendar dataFim = caledarioFim.getCalendar();
+				ArrayList<String> cursosLista = getListCursosEspolhidos();
+				if(cursosLista.get(0).equals("todos")){
+					cursosLista = null; 
+				}
+				
+				dados.setFiltro(dataInicio, dataFim, cursosLista);
+				atualisarGrafico(dados);
+			}
+		});
 		menuBar.add(btnAtualizar);
 		
 		JButton btnCarregarCsv = new JButton("Carregar CSV");
@@ -155,6 +165,8 @@ public class principal extends JFrame {
 		
 		JLabel lblCurso = new JLabel("Curso                          ");
 		panelOp.add(lblCurso);
+		comboBoxCurso.setModel(new DefaultComboBoxModel(new String[] {"todos", "teste"}));
+		comboBoxCurso.setToolTipText("");
 		panelOp.add(comboBoxCurso);
 		
 		JLabel lblDataComeo = new JLabel("Data come\u00E7o");
@@ -182,7 +194,7 @@ public class principal extends JFrame {
 		montarGrafico();
 		painelGrafico = new XChartPanel<CategoryChart>(grafico);
 		
-		//panelDados.add(painelGrafico);
+		panelDados.add(painelGrafico);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		panelDados.add(scrollPane);
