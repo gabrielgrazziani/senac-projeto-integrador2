@@ -2,6 +2,8 @@ package tratamentoDeDados;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import modelo.Evasao;
  
 public class MenuIterator implements Iterator {
  

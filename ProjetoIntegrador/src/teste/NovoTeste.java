@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
+import modelo.Evasao;
 import tratamentoDeDados.DadosFiltrados;
-import tratamentoDeDados.Evasao;
 
 public class NovoTeste {
 	public static void main(String[] args) {

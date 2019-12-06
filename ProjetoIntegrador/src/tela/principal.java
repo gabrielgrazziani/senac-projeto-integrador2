@@ -9,8 +9,8 @@ import org.knowm.xchart.CategoryChart;
 import org.knowm.xchart.XChartPanel;
 import com.toedter.calendar.JDateChooser;
 
+import modelo.Evasao;
 import tratamentoDeDados.DadosFiltrados;
-import tratamentoDeDados.Evasao;
 
 import javax.swing.JButton;
 import java.awt.GridBagConstraints;
