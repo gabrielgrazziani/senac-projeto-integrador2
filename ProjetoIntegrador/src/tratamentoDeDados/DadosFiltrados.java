@@ -53,12 +53,17 @@ public class DadosFiltrados {
 	}
 	
 	private void filtroData(Calendar dataInicio, Calendar dataFim) {
-		if(dataInicio != null && dataFim != null) {
+		if(dataInicio != null || dataFim != null) {
 			ArrayList<Evasao> evasaoTep = (ArrayList<Evasao>) this.evasao.clone();
 			for (Evasao evasao2 : evasaoTep) {
 				Calendar cal = evasao2.getData();
-				if(cal != null && !(cal.compareTo(dataInicio) >= 0 && cal.compareTo(dataFim) <= 0)) {
-					this.evasao.remove(evasao2);
+				if(cal != null) {
+					if(dataInicio != null && !(cal.compareTo(dataInicio) >= 0)) {
+						this.evasao.remove(evasao2);
+					}
+					else if(dataFim != null && !(cal.compareTo(dataFim) <= 0)) {
+						this.evasao.remove(evasao2);
+					}
 				}
 			}
 		}
