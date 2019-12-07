@@ -35,7 +35,7 @@ public class EvasaoDao {
 	public static ArrayList<String> listagemCursos() {
 		
 		try {
-			String sql = "select distinct e.turma from evasao e order by e.area_turma,e.turma";
+			String sql = "select distinct e.turma, e.area_turma from evasao e order by e.area_turma,e.turma";
 
 			Connection conn = Conexao.getConnection();
 			PreparedStatement pstm = conn.prepareStatement(sql);
@@ -43,7 +43,8 @@ public class EvasaoDao {
 			
 			ArrayList<String> listaEvasao = new ArrayList<String>();
 			while (rs.next()) {
-				String e = rs.getString("turma");
+				//String e = rs.getString("area_turma") + " - " + rs.getString("turma");
+				String e =  rs.getString("turma");
 				listaEvasao.add(e);
 			}
 			return listaEvasao;

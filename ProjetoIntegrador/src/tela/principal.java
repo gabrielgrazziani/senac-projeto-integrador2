@@ -1,6 +1,7 @@
 package tela;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -178,11 +179,15 @@ public class principal extends JFrame {
 		panelOp.add(lblCurso);
 		
 		JScrollPane scrollPane_2 = new JScrollPane();
+		scrollPane_2.setEnabled(false);
 		scrollPane_2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		panelOp.add(scrollPane_2);
 		scrollPane_2.setViewportView(comboBoxCurso);
 		comboBoxCurso.setModel(new DefaultComboBoxModel(new String[] {"todos", "teste"}));
 		comboBoxCurso.setToolTipText("");
+		comboBoxCurso.setPreferredSize(new Dimension(100, 21));
+		BoundsPopupMenuListener listener = new BoundsPopupMenuListener(true, false);
+		comboBoxCurso.addPopupMenuListener(listener);
 		
 		JLabel lblDataComeo = new JLabel("Data come\u00E7o");
 		panelOp.add(lblDataComeo);
