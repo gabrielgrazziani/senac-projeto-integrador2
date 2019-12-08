@@ -38,7 +38,8 @@ public class principal extends JFrame {
 	private XChartPanel<CategoryChart> painelGrafico;
 	private JTextArea textLegenda = new JTextArea();
 	private DadosFiltrados dados;
-	private ArrayList<String> motivosEvasao = new ArrayList<String>();
+	private ArrayList<String> cursos = new ArrayList<String>();
+	private JTextArea textArea = new JTextArea();
 
 	/**
 	 * Launch the application.
@@ -97,24 +98,31 @@ public class principal extends JFrame {
 		textLegenda.setText(le);
 	}
 	
-	private void arumarTextRelatorio(DadosFiltrados dados) {
-		//textArea.setText("teste teste\nteste");
+	private void arumarTextRelatorio(DadosFiltrados dados, ArrayList<String> cursos) {
+		TextoRelatorio tex = new TextoRelatorio(dados, cursos);
+		String tep = tex.getTexto();
+		textArea.setText(tep);
 	}
 	
 	private ArrayList<String> getListCursosEspolhidos(){
 		ArrayList<String> cursos = new ArrayList<String>();
 		cursos.add((String) comboBoxCurso.getSelectedItem());
+		if(cursos.get(0).equals("todos")){
+			cursos = null; 
+		}
 		return cursos;
 	}
 	
 	private void arumarComboBoxCurso() throws Exception{
-		motivosEvasao = EvasaoDao.listagemCursos();
-		ArrayList<String> list = motivosEvasao;
+		cursos = EvasaoDao.listagemCursos();
+		ArrayList<String> list = cursos;
 		list.add(0, "todos");
 		String[] cur = (String[]) list.toArray(new String[list.size()]);
 		
 		comboBoxCurso.setModel(new DefaultComboBoxModel(cur));
 	}
+	
+	
 
 	/**
 	 * Create the frame.
@@ -132,7 +140,7 @@ public class principal extends JFrame {
 				try {	
 					dados = new DadosFiltrados(EvasaoDao.listagem());
 					atualisarGrafico(dados);
-					arumarTextRelatorio(dados);
+					arumarTextRelatorio(dados,getListCursosEspolhidos());
 					arumarComboBoxCurso();
 				} catch (Exception e1) {
 					e1.printStackTrace();
@@ -146,12 +154,9 @@ public class principal extends JFrame {
 				Calendar dataInicio = caledarioComeco.getCalendar();
 				Calendar dataFim = caledarioFim.getCalendar();
 				ArrayList<String> cursosLista = getListCursosEspolhidos();
-				if(cursosLista.get(0).equals("todos")){
-					cursosLista = null; 
-				}
-				
 				dados.setFiltro(dataInicio, dataFim, cursosLista);
 				atualisarGrafico(dados);
+				arumarTextRelatorio(dados,cursosLista);
 			}
 		});
 		menuBar.add(btnAtualizar);
@@ -219,7 +224,7 @@ public class principal extends JFrame {
 		JScrollPane scrollPane = new JScrollPane();
 		panelDados.add(scrollPane);
 		
-		JTextArea textArea = new JTextArea();
+		
 		textArea.setEditable(false);
 		scrollPane.setViewportView(textArea);
 	}

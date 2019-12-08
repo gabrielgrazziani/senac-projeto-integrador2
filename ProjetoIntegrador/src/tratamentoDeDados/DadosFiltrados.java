@@ -14,9 +14,21 @@ public class DadosFiltrados {
 	private ArrayList<String> motivoEvasao = new ArrayList<String>();
 	private ArrayList<Integer> frequenciaEvasao = new ArrayList<Integer>();
 	private ArrayList<Integer> frequenciaAcumuladaEvasao = new ArrayList<Integer>();
-	private ArrayList<Integer> frequenciaPorcentagemEvasao = new ArrayList<Integer>();
+	private ArrayList<Float> frequenciaPorcentagemEvasao = new ArrayList<Float>();
 	private ArrayList<Integer> frequenciaPorcentagemAcumuladaEvasao = new ArrayList<Integer>();
 	private ArrayList<String> moda = new ArrayList<String>();
+	public Calendar getDataInicio() {
+		return dataInicio;
+	}
+
+	public Calendar getDataFim() {
+		return dataFim;
+	}
+
+	public ArrayList<String> getModa() {
+		return moda;
+	}
+
 	private Calendar dataInicio;
 	private Calendar dataFim;
 	private ArrayList<String> curso;
@@ -86,8 +98,22 @@ public class DadosFiltrados {
 			DadosQualitativos quali = new DadosQualitativos(motivos);
 			setMotivoEvasao(quali.getVar_xi());
 			setFrequenciaEvasao(quali.getVar_fi());
+			float[] por = quali.getVar_fr();
+			ArrayList<Float> porList = new ArrayList<Float>();
+			for (Float float1 : por) {
+				porList.add(float1);
+			}
+			this.frequenciaPorcentagemEvasao = porList;
+			String[] mod = quali.getModa();
+			ArrayList<String> modList = new ArrayList<String>();
+			for (String s : mod) {
+				modList.add(s);
+			}
+			this.moda = modList;
 		}
 		else {
+			moda.clear();
+			frequenciaPorcentagemEvasao.clear();
 			motivoEvasao.clear();
 			frequenciaEvasao.clear();
 		}
@@ -129,5 +155,9 @@ public class DadosFiltrados {
 		for (int num : novo) {
 			this.frequenciaEvasao.add(num);
 		}
+	}
+
+	public ArrayList<Float> getFrequenciaPorcentagemEvasao() {
+		return frequenciaPorcentagemEvasao;
 	}
 }
