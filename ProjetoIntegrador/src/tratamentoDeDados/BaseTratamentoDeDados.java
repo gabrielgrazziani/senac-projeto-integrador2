@@ -106,7 +106,7 @@ public class BaseTratamentoDeDados {
 		float[] fr = new float[(int) quant];
 		for(int i = 0;i<fi.length;i++) {
 			//fr[i] = arredondar((fi[i]*100)/quant, 2, 0);
-			fr[i] = (fi[i]*100/quant);
+			fr[i] = (fi[i]/quant);
 		}
 		return fr;
 	}

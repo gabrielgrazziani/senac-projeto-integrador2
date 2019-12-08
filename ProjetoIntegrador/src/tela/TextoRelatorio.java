@@ -62,7 +62,7 @@ public class TextoRelatorio {
 		for (int i = 0; i < dados.getMotivoEvasao().size(); i++) {
 			String tep = dados.getFrequenciaEvasao().get(i) + " pessoas Saíram pelo motivo \"" + 
 					dados.getMotivoEvasao().get(i) + "\" representando " + 
-					nf.format(dados.getFrequenciaPorcentagemEvasao().get(i)/100);
+					nf.format(dados.getFrequenciaPorcentagemEvasao().get(i));
 			texto.add(tep);
 		}
 		return texto;
