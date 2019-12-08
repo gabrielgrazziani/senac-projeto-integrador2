@@ -47,7 +47,7 @@ public class TextoRelatorio {
 			else if(lista.size() == 1) {
 				tep += "do curso ";
 			}
-			String cur = listaParaString(cursos,"","\"");
+			String cur = listaParaString(cursos,"\n","\"");
 			tep += cur;
 		}
 		return tep;
@@ -61,7 +61,7 @@ public class TextoRelatorio {
 		ArrayList<String> texto = new ArrayList<String>();
 		for (int i = 0; i < dados.getMotivoEvasao().size(); i++) {
 			String tep = dados.getFrequenciaEvasao().get(i) + " pessoas Saíram pelo motivo \"" + 
-					dados.getMotivoEvasao().get(i) + "\" representando " + 
+					dados.getMotivoEvasao().get(i) + "\" representando aproximadamente " + 
 					nf.format(dados.getFrequenciaPorcentagemEvasao().get(i));
 			texto.add(tep);
 		}
@@ -97,7 +97,7 @@ public class TextoRelatorio {
 			tep += " anteriores a data " + sdf.format(fim.getTime());
 		}
 		else if(fim != null && inicio != null) {
-			tep += " entre as datas " + sdf.format(inicio.getTime()) + "e" + sdf.format(fim.getTime());
+			tep += " entre as datas " + sdf.format(inicio.getTime()) + " e " + sdf.format(fim.getTime());
 		}
 		return tep;
 	}
