@@ -1,9 +1,11 @@
 package tela;
 
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import tratamentoDeDados.DadosFiltrados;
 
@@ -52,11 +54,15 @@ public class TextoRelatorio {
 	}
 	
 	private ArrayList<String> porcentagemTexto() {
+		Locale br = new Locale("pt","Brazil");
+		NumberFormat nf =  NumberFormat.getPercentInstance();
+		nf.setMinimumFractionDigits(2);
+		nf.setMaximumFractionDigits(2);
 		ArrayList<String> texto = new ArrayList<String>();
 		for (int i = 0; i < dados.getMotivoEvasao().size(); i++) {
 			String tep = dados.getFrequenciaEvasao().get(i) + " pessoas Saíram pelo motivo \"" + 
 					dados.getMotivoEvasao().get(i) + "\" representando " + 
-					dados.getFrequenciaPorcentagemEvasao().get(i) + "%";
+					nf.format(dados.getFrequenciaPorcentagemEvasao().get(i)/100);
 			texto.add(tep);
 		}
 		return texto;
