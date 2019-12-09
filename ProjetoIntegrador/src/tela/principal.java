@@ -10,6 +10,7 @@ import org.knowm.xchart.CategoryChart;
 import org.knowm.xchart.XChartPanel;
 import com.toedter.calendar.JDateChooser;
 import dao.EvasaoDao;
+import leituraDeArquivo.LerArquivo;
 import tratamentoDeDados.DadosFiltrados;
 import javax.swing.JButton;
 import java.awt.GridBagConstraints;
@@ -122,13 +123,19 @@ public class principal extends JFrame {
 		comboBoxCurso.setModel(new DefaultComboBoxModel(cur));
 	}
 	
-	
+	private void atualizar() {
+		Calendar dataInicio = caledarioComeco.getCalendar();
+		Calendar dataFim = caledarioFim.getCalendar();
+		ArrayList<String> cursosLista = getListCursosEspolhidos();
+		dados.setFiltro(dataInicio, dataFim, cursosLista);
+		atualisarGrafico(dados);
+		arumarTextRelatorio(dados,cursosLista);
+	}
 
 	/**
 	 * Create the frame.
 	 */
 	public principal() {
-		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		JMenuBar menuBar = new JMenuBar();
@@ -151,17 +158,27 @@ public class principal extends JFrame {
 		JButton btnAtualizar = new JButton("Atualizar");
 		btnAtualizar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Calendar dataInicio = caledarioComeco.getCalendar();
-				Calendar dataFim = caledarioFim.getCalendar();
-				ArrayList<String> cursosLista = getListCursosEspolhidos();
-				dados.setFiltro(dataInicio, dataFim, cursosLista);
-				atualisarGrafico(dados);
-				arumarTextRelatorio(dados,cursosLista);
+				atualizar();
 			}
 		});
 		menuBar.add(btnAtualizar);
 		
 		JButton btnCarregarCsv = new JButton("Carregar CSV");
+		btnCarregarCsv.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Boolean v = LerArquivo.lerEInserir();
+				if(v) {
+					dados = new DadosFiltrados(EvasaoDao.listagem());
+					try {
+						arumarComboBoxCurso();
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					atualizar();
+				}
+			}
+		});
 		menuBar.add(btnCarregarCsv);
 		
 		JMenu menu = new JMenu("");

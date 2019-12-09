@@ -44,7 +44,7 @@ public class LerArquivo {
 		lerEInserir();
 	}
 	
-	public static void lerEInserir() {
+	public static Boolean lerEInserir() {
 		try {
 			File file = escolherArquivo();
 			if(file != null) {
@@ -59,12 +59,14 @@ public class LerArquivo {
 					adicinar(lista);
 				}
 				JOptionPane.showMessageDialog(null, "Pronto");
+				return true;
 			}
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
+		return false;
 	}
 	
 	private static void excluir() throws Exception {
