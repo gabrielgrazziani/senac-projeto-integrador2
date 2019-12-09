@@ -4,8 +4,12 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
-
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 import modelo.EvasaoCSV;
+import tela.BarraDeProcesso;
+
 
 public class EvasaoCSV_Dao {
 	public static boolean inserir(EvasaoCSV csv) {
@@ -39,6 +43,9 @@ public class EvasaoCSV_Dao {
 
 			Connection conn = Conexao.getConnection();
 			PreparedStatement pstm = conn.prepareStatement(sql);
+		    
+			BarraDeProcesso fra = new BarraDeProcesso(listaCSV.size());
+			
 			for (EvasaoCSV csv : listaCSV) {
 				pstm.setString(1, csv.getTurno());
 				pstm.setString(2, csv.getEstadoCivil());
@@ -49,6 +56,7 @@ public class EvasaoCSV_Dao {
 				pstm.setString(6, csv.getCurso());
 				pstm.setString(7, csv.getArea());
 				pstm.executeUpdate();
+				fra.prosseguir();
 			}
 			return true;
 		} catch (Exception e) {
@@ -57,6 +65,29 @@ public class EvasaoCSV_Dao {
 		}
 	}
 	
+	public static boolean inserir2(ArrayList<EvasaoCSV> listaCSV) {
+		try {
+			String sql = "insert into facudade.evasao(turno_matricula,situacao_civil_aluno,sexo_aluno,data_cadastro_requerimento,motivo_requerimento,turma,area_turma) "
+					+ "values ";
+
+			EvasaoCSV csv = listaCSV.get(0);
+			sql += csv.toString();
+			
+			for (int i = 1; i < listaCSV.size(); i++) {
+				csv = listaCSV.get(i);
+				sql += "," + csv.toString();
+			}
+			
+			Connection conn = Conexao.getConnection();
+			PreparedStatement pstm = conn.prepareStatement(sql);
+			pstm.executeUpdate();
+			
+			return true;
+		} catch (Exception e) {
+			System.out.print("Erro ao inserir! " + e.getMessage());
+			return false;
+		}
+	}
 	
 	public static boolean deletarTabela() {
 		try {
@@ -71,3 +102,4 @@ public class EvasaoCSV_Dao {
 		}
 	}
 }
+
