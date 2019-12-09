@@ -55,7 +55,8 @@ public class LerArquivo {
 					adicinar(lista);
 				}
 				else if (op == 1) { // Sobrescrever
-					
+					excluir();
+					adicinar(lista);
 				}
 				JOptionPane.showMessageDialog(null, "Pronto");
 			}
@@ -64,6 +65,11 @@ public class LerArquivo {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
+	}
+	
+	private static void excluir() throws Exception {
+		Boolean v = EvasaoCSV_Dao.deletarTabela();
+		if(!v) throw new Exception("Erro ao excluir os dados antigos");
 	}
 	
 	private static void adicinar(ArrayList<EvasaoCSV> lista) throws Exception {
