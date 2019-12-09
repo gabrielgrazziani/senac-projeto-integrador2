@@ -1,5 +1,6 @@
 package modelo;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -24,8 +25,10 @@ public class EvasaoCSV {
 	}
 	@Override
 	public String toString() {
-		return "EvasaoCSV [turno=" + turno + ", estadoCivil=" + estadoCivil + ", sexo=" + sexo + ", data=" + data
-				+ ", motivo=" + motivo + ", curso=" + curso + ", area=" + area + "]";
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String data = sdf.format(this.data.getTime());
+		return "('" + turno + "','" + estadoCivil + "','" + sexo + "','" + data
+				+ "','" + motivo + "','" + curso + "','" + area + "')";
 	}
 	public String getTurno() {
 		return turno;

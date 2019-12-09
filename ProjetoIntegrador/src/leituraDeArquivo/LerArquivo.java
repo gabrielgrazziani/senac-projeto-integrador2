@@ -60,50 +60,50 @@ public class LerArquivo {
 				JOptionPane.showMessageDialog(null, "Pronto");
 			}
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Falha ao ler o arquivo.");
+			JOptionPane.showMessageDialog(null, e.getMessage());
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
 	}
 	
-	private static void adicinar(ArrayList<EvasaoCSV> lista) {
-		try {
-			EvasaoCSV_Dao.inserir(lista);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			e.printStackTrace();
-			JOptionPane.showMessageDialog(null, e.getMessage());
-		}
+	private static void adicinar(ArrayList<EvasaoCSV> lista) throws Exception {
+		Boolean v = EvasaoCSV_Dao.inserir(lista);
+		if(!v) throw new Exception("Erro ao inserir Dados");
 	}
 	private static ArrayList<EvasaoCSV> ler(File arq) throws Exception {
-		ArrayList<EvasaoCSV> lista = new ArrayList<EvasaoCSV>();
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		EvasaoCSV csv;
-		if(arq.exists()) {
-				//FileReader fr = new FileReader(arq);
-				//BufferedReader br = new BufferedReader(fr);
-				FileInputStream fis = new FileInputStream(arq);
-				InputStreamReader isr = new InputStreamReader(fis, "UTF-8");
-				BufferedReader br = new BufferedReader(isr);
-				br.readLine();
-				while (br.ready()) {
-					csv = new EvasaoCSV();
-					String linha = br.readLine();
-					String[] campos = linha.split(",");
-					csv.setTurno(campos[0]);
-					csv.setEstadoCivil(campos[1]);
-					csv.setSexo(campos[2]);
-			    	Date data = sdf.parse(campos[3]); 
-					csv.setData(data);
-					csv.setMotivo(campos[4]);
-					csv.setCurso(campos[5]);
-					csv.setArea(campos[6]);
-					lista.add(csv);
-				}
-				br.close();
-				fis.close();
+		try {
+			ArrayList<EvasaoCSV> lista = new ArrayList<EvasaoCSV>();
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			EvasaoCSV csv;
+			if(arq.exists()) {
+					//FileReader fr = new FileReader(arq);
+					//BufferedReader br = new BufferedReader(fr);
+					FileInputStream fis = new FileInputStream(arq);
+					InputStreamReader isr = new InputStreamReader(fis, "UTF-8");
+					BufferedReader br = new BufferedReader(isr);
+					br.readLine();
+					while (br.ready()) {
+						csv = new EvasaoCSV();
+						String linha = br.readLine();
+						String[] campos = linha.split(",");
+						csv.setTurno(campos[0]);
+						csv.setEstadoCivil(campos[1]);
+						csv.setSexo(campos[2]);
+				    	Date data = sdf.parse(campos[3]); 
+						csv.setData(data);
+						csv.setMotivo(campos[4]);
+						csv.setCurso(campos[5]);
+						csv.setArea(campos[6]);
+						lista.add(csv);
+					}
+					br.close();
+					fis.close();
+					return lista;
+			}
+		} catch (Exception e) {
+			throw new Exception("Erro ao Ler Arquivo.");
 		}
-		return lista;
+		return null;
 	}
 
 }
