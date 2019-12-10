@@ -1,5 +1,5 @@
-CREATE database facudade;
-use facudade;
+CREATE database faculdade;
+use faculdade;
 CREATE TABLE `evasao` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `turno_matricula` varchar(10) CHARACTER SET latin1 DEFAULT NULL,
