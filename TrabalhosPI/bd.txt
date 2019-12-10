@@ -1,0 +1,13 @@
+CREATE database facudade;
+use facudade;
+CREATE TABLE `evasao` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `turno_matricula` varchar(10) CHARACTER SET latin1 DEFAULT NULL,
+  `situacao_civil_aluno` varchar(20) CHARACTER SET latin1 DEFAULT NULL,
+  `sexo_aluno` varchar(20) CHARACTER SET latin1 DEFAULT NULL,
+  `data_cadastro_requerimento` date NOT NULL,
+  `motivo_requerimento` varchar(40) CHARACTER SET latin1 NOT NULL,
+  `turma` varchar(80) CHARACTER SET latin1 NOT NULL,
+  `area_turma` varchar(40) CHARACTER SET latin1 DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=18397 DEFAULT CHARSET=utf8;
