@@ -13,7 +13,7 @@ import modelo.EvasaoCSV;
 public class EvasaoCSV_Dao {
 	public static boolean inserir(EvasaoCSV csv) {
 		try {
-			String sql = "insert into facudade.evasao(turno_matricula,situacao_civil_aluno,sexo_aluno,data_cadastro_requerimento,motivo_requerimento,turma,area_turma) "
+			String sql = "insert into evasao(turno_matricula,situacao_civil_aluno,sexo_aluno,data_cadastro_requerimento,motivo_requerimento,turma,area_turma) "
 					+ "values (?,?,?,?,?,?,?)";
 
 			Connection conn = Conexao.getConnection();
@@ -37,7 +37,7 @@ public class EvasaoCSV_Dao {
 	
 	public static boolean inserir(ArrayList<EvasaoCSV> listaCSV) {
 		try {
-			String sql = "insert into facudade.evasao(turno_matricula,situacao_civil_aluno,sexo_aluno,data_cadastro_requerimento,motivo_requerimento,turma,area_turma) "
+			String sql = "insert into evasao(turno_matricula,situacao_civil_aluno,sexo_aluno,data_cadastro_requerimento,motivo_requerimento,turma,area_turma) "
 					+ "values ";
 
 			EvasaoCSV csv = listaCSV.get(0);

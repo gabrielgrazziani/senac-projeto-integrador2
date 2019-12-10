@@ -8,7 +8,11 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import org.knowm.xchart.CategoryChart;
 import org.knowm.xchart.XChartPanel;
+
+import com.sun.jndi.ldap.Connection;
 import com.toedter.calendar.JDateChooser;
+
+import dao.Conexao;
 import dao.EvasaoDao;
 import leituraDeArquivo.LerArquivo;
 import tratamentoDeDados.DadosFiltrados;
@@ -17,10 +21,12 @@ import java.awt.GridBagConstraints;
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
 import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
 import javax.swing.JMenu;
 import java.awt.GridLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import javax.swing.JScrollPane;
@@ -105,6 +111,22 @@ public class principal extends JFrame {
 		textArea.setText(tep);
 	}
 	
+	private Boolean testarConexao() throws SQLException {
+		java.sql.Connection c = Conexao.getConnection();
+		if(c == null) {
+			Object[] options = { "tentar novamente", "sair" };
+			int op = JOptionPane.showOptionDialog(null, "falha ao conectar com o banco de dados! ", "falha", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+			if(op == 0) { // tentar novamente
+				return false;
+			}
+			else if (op == 1) { // sair
+				System.exit(0);
+			}
+		}
+		c.close();
+		return true;
+	}
+	
 	private ArrayList<String> getListCursosEspolhidos(){
 		ArrayList<String> cursos = new ArrayList<String>();
 		cursos.add((String) comboBoxCurso.getSelectedItem());
@@ -144,7 +166,8 @@ public class principal extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowOpened(WindowEvent e) {
-				try {	
+				try {
+					while (!testarConexao());
 					dados = new DadosFiltrados(EvasaoDao.listagem());
 					atualisarGrafico(dados);
 					arumarTextRelatorio(dados,getListCursosEspolhidos());
