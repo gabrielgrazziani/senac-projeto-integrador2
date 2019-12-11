@@ -71,7 +71,7 @@ public class principal extends JFrame {
 		
 		arumarLegenda(nomes, legenda, numeros);
 		grafico = new CategoryChart(30, 30);
-		grafico.addSeries("Motivos Evasão", legenda, numeros);
+		grafico.addSeries("Motivos Evasï¿½o", legenda, numeros);
 	}
 	
 	private void atualisarGrafico(DadosFiltrados dados) {
@@ -80,7 +80,7 @@ public class principal extends JFrame {
 		ArrayList<String> legenda = legendaArrayList(nomes);
 		arumarLegenda(nomes, legenda, numeros);
 		
-		grafico.updateCategorySeries("Motivos Evasão", legenda, numeros, null);
+		grafico.updateCategorySeries("Motivos Evasï¿½o", legenda, numeros, null);
 		painelGrafico.repaint();
 	}
 	
@@ -137,6 +137,8 @@ public class principal extends JFrame {
 	 * Create the frame.
 	 */
 	public principal() {
+		setResizable(false);
+		setSize(1024, 768);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		JMenuBar menuBar = new JMenuBar();
