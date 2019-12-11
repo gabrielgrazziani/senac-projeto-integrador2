@@ -69,9 +69,10 @@ public class LerArquivo {
 		return false;
 	}
 	
-	private static void excluir() throws Exception {
+	public static Boolean excluir() throws Exception {
 		Boolean v = EvasaoCSV_Dao.deletarTabela();
 		if(!v) throw new Exception("Erro ao excluir os dados antigos");
+		return v;
 	}
 	
 	private static void adicinar(ArrayList<EvasaoCSV> lista) throws Exception {

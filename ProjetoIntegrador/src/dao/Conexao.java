@@ -5,15 +5,12 @@ import java.sql.DriverManager;
 
 public class Conexao {
 
-	private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
-	private static final String URL = "jdbc:mysql://localhost:3306/faculdade";
-	private static final String USER = "root";
-	private static final String PASSWORD = "";
+	private static final String URL = "jdbc:sqlite:./faculdade.db";
 	
 	public static Connection getConnection() {
 		try {
-			Class.forName(DRIVER);
-			return DriverManager.getConnection(URL, USER, PASSWORD);
+			Class.forName("org.sqlite.JDBC");
+			return DriverManager.getConnection(URL);
 		} catch (Exception e) {
 			System.out.print("Erro ao conectar no BD!" + e.getMessage());
 			return null;

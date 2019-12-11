@@ -8,11 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import org.knowm.xchart.CategoryChart;
 import org.knowm.xchart.XChartPanel;
-
-import com.sun.jndi.ldap.Connection;
 import com.toedter.calendar.JDateChooser;
-
-import dao.Conexao;
 import dao.EvasaoDao;
 import leituraDeArquivo.LerArquivo;
 import tratamentoDeDados.DadosFiltrados;
@@ -26,7 +22,6 @@ import javax.swing.JMenu;
 import java.awt.GridLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import javax.swing.JScrollPane;
@@ -111,22 +106,6 @@ public class principal extends JFrame {
 		textArea.setText(tep);
 	}
 	
-	private Boolean testarConexao() throws SQLException {
-		java.sql.Connection c = Conexao.getConnection();
-		if(c == null) {
-			Object[] options = { "tentar novamente", "sair" };
-			int op = JOptionPane.showOptionDialog(null, "falha ao conectar com o banco de dados! ", "falha", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-			if(op == 0) { // tentar novamente
-				return false;
-			}
-			else if (op == 1) { // sair
-				System.exit(0);
-			}
-		}
-		c.close();
-		return true;
-	}
-	
 	private ArrayList<String> getListCursosEspolhidos(){
 		ArrayList<String> cursos = new ArrayList<String>();
 		cursos.add((String) comboBoxCurso.getSelectedItem());
@@ -166,8 +145,7 @@ public class principal extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowOpened(WindowEvent e) {
-				try {
-					while (!testarConexao());
+				try {	
 					dados = new DadosFiltrados(EvasaoDao.listagem());
 					atualisarGrafico(dados);
 					arumarTextRelatorio(dados,getListCursosEspolhidos());
@@ -195,7 +173,6 @@ public class principal extends JFrame {
 					try {
 						arumarComboBoxCurso();
 					} catch (Exception e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 					atualizar();
@@ -203,6 +180,29 @@ public class principal extends JFrame {
 			}
 		});
 		menuBar.add(btnCarregarCsv);
+		
+		JButton btnDeletarDados = new JButton("Deletar Dados");
+		btnDeletarDados.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Boolean v;
+				try {
+					v = LerArquivo.excluir();
+					if(v) {
+						dados = new DadosFiltrados(EvasaoDao.listagem());
+						try {
+							arumarComboBoxCurso();
+						} catch (Exception e1) {
+							e1.printStackTrace();
+						}
+						atualizar();
+					}
+				} catch (Exception e2) {
+					JOptionPane.showMessageDialog(null, "Erro ao Deletar");
+					e2.printStackTrace();
+				}
+			}
+		});
+		menuBar.add(btnDeletarDados);
 		
 		JMenu menu = new JMenu("");
 		menu.setEnabled(false);
